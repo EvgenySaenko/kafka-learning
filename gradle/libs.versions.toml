@@ -1,0 +1,41 @@
+[versions]
+kafka = "3.9.1"
+logback = "1.4.14"
+spring-boot = "2.7.18"
+spring-cloud = "2021.0.8"
+junit = "5.10.2"
+assertj = "3.25.3"
+mockito = "5.12.0"
+lombok = "1.18.32"
+testcontainers = "1.19.7"
+
+[libraries]
+# Kafka
+kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
+
+# Логгирование
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+# Spring Boot
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+spring-kafka = { module = "org.springframework.kafka:spring-kafka", version.ref = "spring-boot" }
+
+# Spring Cloud
+spring-cloud-starter = { module = "org.springframework.cloud:spring-cloud-starter", version.ref = "spring-cloud" }
+
+# Тестирование
+junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+
+# Утилиты
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# Testcontainers (Kafka и не только)
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+commons-compress = { module = "org.apache.commons:commons-compress", version = "1.26.1" }
+
+testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "testcontainers" }

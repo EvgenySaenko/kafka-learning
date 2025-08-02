@@ -1,0 +1,9 @@
+rootProject.name = 'kafka-learning'
+
+//Gradle будет ожидать путь: <java/kafka-producer/build.gradle>
+
+include 'java:kafka-producer'
+include 'java:kafka-consumer'
+include 'spring-boot:kafka-producer'
+include 'spring-boot:kafka-consumer'
+include 'pet:kafka-order-demo'
