@@ -54,9 +54,13 @@ docker exec -it kafka kafka-console-consumer --topic demo-topic --bootstrap-serv
   docker exec -it kafka kafka-console-consumer --topic demo-topic --bootstrap-server localhost:9092 --group demo-group --from-beginning --property print.partition=true --property print.offset=true --property print.timestamp=true
 ```
 ![img_33.png](img_33.png)
+
 ![img_34.png](img_34.png)
+
 ![img_35.png](img_35.png)
+
 ![img_36.png](img_36.png)
+
 ![img_37.png](img_37.png)
 - Команда для запуска с выводом партиции:
 ```bash
@@ -88,4 +92,50 @@ CreateTime:1754510085957        Partition:2     Offset:29       30
 ```
 
 ![img_38.png](img_38.png)
+
 ![img_39.png](img_39.png)
+
+### Пример отправки сообщений с ключем
+![img_40.png](img_40.png)
+
+#### Запускаем в одном окне терминала продюсер
+```bash
+kafka-console-producer --topic demo-topic --bootstrap-server localhost:9092 --property "parse.key=true" --property "key.separator=:"
+```
+
+#### Запускаем в другом окне консюмер
+
+```bash
+kafka-console-consumer --topic demo-topic --bootstrap-server localhost:9092 --group demo-group-new --from-beginning --property print.key=true --prope
+rty print.partition=true --property print.offset=true --property print.timestamp=true
+```
+
+В продюсере отправляем например два сообщения 
+```bash
+a:Message from A
+b:Message from B
+
+```
+
+В консюмере видем такую картину
+
+```bash
+CreateTime:1760783214773        Partition:2     Offset:30       b       Привет от ��B
+CreateTime:1760790521286        Partition:2     Offset:31       b       Message from B
+CreateTime:1760790509402        Partition:1     Offset:0        a       Message from A
+CreateTime:1760783186873        Partition:0     Offset:0        ��а�    Привет от А
+CreateTime:1760783227784        Partition:0     Offset:1        с       Привет от C
+CreateTime:1760783250830        Partition:0     Offset:2        �a      Е�ще одно от A
+CreateTime:1760783268792        Partition:0     Offset:3        �b      Еще от B
+
+```
+
+![img_41.png](img_41.png)
+
+>🧠 Что важно ты уже понял:
+
+>Сообщения с одинаковыми ключами — всегда будут попадать в одну и ту же партицию (в пределах одного и того же топика).
+> 
+>Консумеры с новой группой могут вычитать всё заново (если --from-beginning).
+> 
+>CURRENT-OFFSET != LOG-END-OFFSET — значит есть непрочитанные сообщения.
