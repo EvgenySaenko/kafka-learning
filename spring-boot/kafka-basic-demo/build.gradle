@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagement}"
+}
+
+dependencies {
+    implementation libs.spring.boot.starter
+    implementation libs.spring.boot.starter.web
+    implementation libs.spring.kafka
+
+    implementation libs.lombok// 👈 нужно, если IDE ругается на Lombok-генерируемый код (например, @Slf4j)
+    annotationProcessor libs.lombok// 👈 обязательно для генерации конструктора, геттеров и пр.
+
+    testImplementation libs.lombok// 👈 не всегда нужно, только если в тестах тоже используешь Lombok
+    testAnnotationProcessor libs.lombok// 👈 аналогично — для генерации в тестах
+    testImplementation libs.spring.boot.starter.test
+    testImplementation libs.junit
+    testImplementation libs.assertj
+    testImplementation libs.mockito
+}

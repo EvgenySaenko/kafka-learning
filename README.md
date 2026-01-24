@@ -9,6 +9,7 @@
 - [🧠 Kafka: обзор и архитектура](notes/kafka-overview.md)
 - [🧠 Kafka: ручная установка с ZooKeeper](notes/kafka-manual-install.md)
 - [📤📥 Продюсер и консюмер](notes/producer-consumer.md)
+- 
 - [🔀 Kafka Streams и ksqlDB](notes/streams-ksqldb.md)
 - [🐳 Kafka в Docker](notes/docker-kafka.md)
 - [🛠️ FAQ и отладка](notes/troubleshooting.md)

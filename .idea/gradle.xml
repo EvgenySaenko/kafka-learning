@@ -4,8 +4,8 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="testRunner" value="PLATFORM" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -15,7 +15,9 @@
             <option value="$PROJECT_DIR$/pet" />
             <option value="$PROJECT_DIR$/pet/kafka-order-demo" />
             <option value="$PROJECT_DIR$/spring-boot" />
+            <option value="$PROJECT_DIR$/spring-boot/kafka-basic-demo" />
             <option value="$PROJECT_DIR$/spring-boot/kafka-consumer" />
+            <option value="$PROJECT_DIR$/spring-boot/kafka-json-demo" />
             <option value="$PROJECT_DIR$/spring-boot/kafka-producer" />
           </set>
         </option>

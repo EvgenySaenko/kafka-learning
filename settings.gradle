@@ -4,6 +4,15 @@ rootProject.name = 'kafka-learning'
 
 include 'java:kafka-producer'
 include 'java:kafka-consumer'
+
 include 'spring-boot:kafka-producer'
 include 'spring-boot:kafka-consumer'
+include 'spring-boot:kafka-basic-demo'
+
 include 'pet:kafka-order-demo'
+findProject(':spring-boot:kafka-basic-demo')?.name = 'kafka-basic-demo'
+include 'spring-boot:kafka-json-demo'
+findProject(':spring-boot:kafka-json-demo')?.name = 'kafka-json-demo'
+include 'spring-boot:kafka-guarantee-at-most-once'
+findProject(':spring-boot:kafka-guarantee-at-most-once')?.name = 'kafka-guarantee-at-most-once'
+

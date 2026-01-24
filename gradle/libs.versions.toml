@@ -1,41 +1,52 @@
 [versions]
-kafka = "3.9.1"
-logback = "1.4.14"
-spring-boot = "2.7.18"
+# Kafka и Spring
+kafka-clients = "3.9.1"
 spring-cloud = "2021.0.8"
+
+# Тесты и утилиты
 junit = "5.10.2"
 assertj = "3.25.3"
 mockito = "5.12.0"
 lombok = "1.18.32"
 testcontainers = "1.19.7"
+h2 = "2.2.224"
+
+# Логгирование (используется в Java-проектах)
+slf4j-simple = "2.0.12"
 
 [libraries]
-# Kafka
-kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
+h2 = { module = "com.h2database:h2", version.ref = "h2" }
 
-# Логгирование
-logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+# ===== Kafka (для Java-проектов и Spring Kafka) =====
+kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka-clients" }
 
-# Spring Boot
-spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
-spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot" }
-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
-spring-kafka = { module = "org.springframework.kafka:spring-kafka", version.ref = "spring-boot" }
+# ===== Логгирование для Java-проектов (Spring Boot сам подтянет logback/slf4j) =====
+# SLF4J Simple используется только в простых Java-примерах
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j-simple" }
 
-# Spring Cloud
+# ===== Spring Boot =====
+# Версии НЕ указываем, они подтянутся автоматически из BOM spring-boot-dependencies
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
+
+# ===== Spring Cloud (если будешь использовать) =====
 spring-cloud-starter = { module = "org.springframework.cloud:spring-cloud-starter", version.ref = "spring-cloud" }
 
-# Тестирование
+# ===== Тестирование =====
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 
-# Утилиты
+# ===== Утилиты =====
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 
-# Testcontainers (Kafka и не только)
+# ===== Testcontainers =====
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
-commons-compress = { module = "org.apache.commons:commons-compress", version = "1.26.1" }
-
 testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "testcontainers" }
+
+# commons-compress можно оставить, если используешь в тестах архивацию/распаковку
+commons-compress = { module = "org.apache.commons:commons-compress", version = "1.26.1" }

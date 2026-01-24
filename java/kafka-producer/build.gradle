@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+    id 'application' // позволит запустить main-класс
+}
+
+dependencies {
+    implementation libs.kafka.clients
+    implementation libs.slf4j.simple // для красивого вывода логов (по желанию)
+}
+
+application {
+    mainClass = 'com.evgeny.kafka.SimpleKafkaProducer'
+}

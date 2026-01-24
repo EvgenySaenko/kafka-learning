@@ -1,0 +1,46 @@
+server:
+  port: 8081                           # Указываем порт для запуска Spring Boot приложения
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092 # Адрес Kafka-брокера
+
+    consumer:
+      group-id: json-group            # ID группы консюмеров Kafka
+      auto-offset-reset: earliest     # Если offset нет — читать с начала
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer   # Десериализатор ключа
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer # Десериализатор значений (JSON → объект)
+      properties:
+        spring.json.trusted.packages: "*"   # Доверять всем пакетам при десериализации JSON
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer   # Сериализатор ключа (String → байты)
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # Сериализатор значений (объект → JSON)
+
+    template:
+      default-topic: json-demo-topic  # Топик по умолчанию для KafkaTemplate
+
+#mem: — база очищается при остановке приложения.
+#  jdbc:h2:file:./data/testdb;AUTO_SERVER=TRUE - данные будут стабильными
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+#  открыть консоль h2 http://localhost:8081/h2-console
+#  Открой http://localhost:8081/h2-console и поставь:
+#  JDBC URL: jdbc:h2:mem:testdb
+#  User Name: sa
+#  Password: (пусто)
+
+  jpa:
+    hibernate:
+      ddl-auto: update # можно "create" для чистой схемы каждый раз
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false  # по умолчанию безопасно

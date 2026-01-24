@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagement}"
+}
+
+dependencies {
+    implementation libs.spring.boot.starter
+    implementation libs.spring.kafka
+    implementation libs.spring.boot.starter.web
+
+    implementation libs.lombok
+    annotationProcessor libs.lombok
+
+    testImplementation libs.spring.boot.starter.test
+}

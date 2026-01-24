@@ -1,8 +1,8 @@
 plugins {
     id 'java'// подключает поддержку Java (компиляция, структура каталогов и т.д.).
     id 'application'//позволяет запускать main-класс (см. application.mainClass) и собирать .jar с entry-point.
-    id 'org.springframework.boot' version '2.7.18' apply false // apply false — значит не применять сейчас, но сделать доступным для subprojects
-    id 'io.spring.dependency-management' version '1.1.4' apply false
+    id 'org.springframework.boot' version "${springBootVersion}" apply false // apply false — значит не применять сейчас, но сделать доступным для subprojects
+    id 'io.spring.dependency-management' version "${springDependencyManagement}" apply false
 }
 
 group = 'com.evgeny.kafka'//используется как namespace для всех артефактов. Например, при публикации или в логах будет: com.evgeny.kafka:module-name:0.1.0.
@@ -20,26 +20,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation libs.kafka.clients
-    implementation libs.logback
-
-    testImplementation libs.junit
-    testImplementation libs.assertj
-    testImplementation libs.mockito
-    testImplementation libs.testcontainers
-    implementation libs.commons.compress
-    testImplementation libs.testcontainers.kafka
-}
-
-
-//Обязательная настройка для JUnit 5.
-//Подключает Jupiter Platform (включая аннотации @Test, @DisplayName, @Nested и т.д.).
-test {
-    useJUnitPlatform()
-}
-
-// добавлено — это включится в подпроектах при применении spring-boot
 subprojects {
     apply plugin: 'java'
 
@@ -47,8 +27,18 @@ subprojects {
         mavenCentral()
     }
 
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(11)
+        }
+    }
+
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
         options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation']
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
