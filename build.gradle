@@ -33,6 +33,11 @@ subprojects {
         }
     }
 
+    // ✅ Ограничиваем память JVM для всех задач JavaExec (в т.ч. :module:SomeApplication.main())
+    tasks.withType(JavaExec).configureEach {
+        jvmArgs '-Xms128m', '-Xmx512m'
+    }
+
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
         options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation']

@@ -1,0 +1,16 @@
+server:
+  port: 8082
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    admin:
+      auto-create: true  # нужно чтобы в java конфиге работало автосоздание топика
+
+app:
+  kafka:
+    bootstrap-servers: localhost:9092          # адрес брокера
+    topic: guarantee-at-most-once-topic        # наш топик
+    group-id: guarantee-at-most-once-group     # группа
+    auto-offset-reset: earliest                # для чистого демо
+    enable-auto-commit: false                  # ВАЖНО: авто-коммит выключен
