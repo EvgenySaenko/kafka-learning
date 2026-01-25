@@ -1,0 +1,44 @@
+server:
+  port: 8083
+
+app:
+  kafka:
+    topic: guarantee-at-least-once-topic
+#    group-id: guarantee-at-least-once-group
+    group-id: guarantee-at-least-once-group-v2
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: ${app.kafka.group-id} # группа консюмера
+      auto-offset-reset: earliest     # для демо читаем "с начала", если офсета нет
+      enable-auto-commit: false       # авто-коммит выключен (мы коммитим ACK'ом)
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"     # разрешаем десериализацию DTO
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    listener:
+      ack-mode: manual # ВАЖНО: подтверждаем offset вручную через Acknowledgment.acknowledge()
+
+  datasource:
+    url: jdbc:h2:mem:alo2;DB_CLOSE_DELAY=-1       # 👈 in-memory БД (живет пока приложение живо)
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update                           # 👈 для демо ок
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console                          # 👈 http://localhost:8083/h2-console

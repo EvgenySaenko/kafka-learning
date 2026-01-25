@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/spring-boot" />
             <option value="$PROJECT_DIR$/spring-boot/kafka-basic-demo" />
             <option value="$PROJECT_DIR$/spring-boot/kafka-consumer" />
+            <option value="$PROJECT_DIR$/spring-boot/kafka-guarantee-at-most-once" />
             <option value="$PROJECT_DIR$/spring-boot/kafka-json-demo" />
             <option value="$PROJECT_DIR$/spring-boot/kafka-producer" />
           </set>

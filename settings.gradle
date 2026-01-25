@@ -15,4 +15,6 @@ include 'spring-boot:kafka-json-demo'
 findProject(':spring-boot:kafka-json-demo')?.name = 'kafka-json-demo'
 include 'spring-boot:kafka-guarantee-at-most-once'
 findProject(':spring-boot:kafka-guarantee-at-most-once')?.name = 'kafka-guarantee-at-most-once'
+include 'spring-boot:kafka-guarantee-at-least-once'
+findProject(':spring-boot:kafka-guarantee-at-least-once')?.name = 'kafka-guarantee-at-least-once'
 
