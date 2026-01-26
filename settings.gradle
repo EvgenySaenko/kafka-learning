@@ -17,4 +17,6 @@ include 'spring-boot:kafka-guarantee-at-most-once'
 findProject(':spring-boot:kafka-guarantee-at-most-once')?.name = 'kafka-guarantee-at-most-once'
 include 'spring-boot:kafka-guarantee-at-least-once'
 findProject(':spring-boot:kafka-guarantee-at-least-once')?.name = 'kafka-guarantee-at-least-once'
+include 'spring-boot:kafka-guarantee-at-least-once-idempotent'
+findProject(':spring-boot:kafka-guarantee-at-least-once-idempotent')?.name = 'kafka-guarantee-at-least-once-idempotent'
 

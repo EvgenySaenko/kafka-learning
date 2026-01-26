@@ -1,0 +1,43 @@
+server:
+  port: 8084
+
+app:
+  kafka:
+    topic: guarantee-at-least-once-idempotent-topic
+    group-id: guarantee-at-least-once-idempotent-group
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: ${app.kafka.group-id}
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    listener:
+      ack-mode: manual
+
+  datasource:
+    url: jdbc:h2:mem:alo_idemp;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
