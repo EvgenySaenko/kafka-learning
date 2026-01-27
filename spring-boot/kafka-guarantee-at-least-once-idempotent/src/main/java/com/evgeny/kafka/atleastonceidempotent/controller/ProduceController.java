@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/messages")
@@ -17,12 +16,6 @@ public class ProduceController {
 
     @PostMapping
     public ResponseEntity<String> send(@RequestBody MessageDto dto) {
-
-        // удобно для Postman: можно не передавать messageId, а мы сгенерим
-        if (dto.getMessageId() == null || dto.getMessageId().isBlank()) {
-            dto.setMessageId(UUID.randomUUID().toString());
-        }
-
         producer.send(dto);
         return ResponseEntity.ok(dto.getMessageId());
     }

@@ -20,9 +20,13 @@ public class AtLeastOnceIdempotentConsumer {
 
         log.info("📩 RECEIVED messageId={}, key={}, value={}", dto.getMessageId(), dto.getKey(), dto.getValue());
 
-        service.process(dto);
-
-        ack.acknowledge();
-        log.info("✅ ACKED offset (after idempotent processing)");
+        try {
+            service.process(dto);
+            ack.acknowledge();
+            log.info("✅ ACKED offset (after idempotent processing)");
+        } catch (Exception e) {
+            log.error("💥 PROCESS FAILED (will be handled by error handler): {}", e.toString());
+            throw e; // КЛЮЧЕВО: чтобы DefaultErrorHandler отправил в DLT
+        }
     }
 }
