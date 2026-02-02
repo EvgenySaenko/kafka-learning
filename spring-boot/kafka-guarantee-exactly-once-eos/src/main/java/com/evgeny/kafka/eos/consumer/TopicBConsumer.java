@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class TopicBConsumer {
 
-    @KafkaListener(topics = "${app.kafka.topic-b}", groupId = "${app.kafka.group-id}-b")
+    @KafkaListener(
+            topics = "${app.kafka.topic-b}",
+            groupId = "${app.kafka.group-id}-b",
+            containerFactory = "kafkaListenerContainerFactoryB"
+    )
     public void listen(OutputMessageDto dto) {
         log.info("✅ B RECEIVED messageId={}, key={}, result={}", dto.getMessageId(), dto.getKey(), dto.getResult());
     }

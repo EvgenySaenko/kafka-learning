@@ -33,7 +33,7 @@ spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
-
+spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
 # ===== Spring Cloud (если будешь использовать) =====
 spring-cloud-starter = { module = "org.springframework.cloud:spring-cloud-starter", version.ref = "spring-cloud" }
 

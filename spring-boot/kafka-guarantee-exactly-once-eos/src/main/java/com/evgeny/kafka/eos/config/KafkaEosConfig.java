@@ -11,10 +11,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.kafka.listener.ContainerProperties;
-import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
-import org.springframework.kafka.listener.DefaultAfterRollbackProcessor;
-import org.springframework.kafka.listener.AfterRollbackProcessor;
+import org.springframework.kafka.listener.*;
 import org.springframework.kafka.transaction.KafkaTransactionManager;
 import org.springframework.kafka.support.ExponentialBackOffWithMaxRetries;
 
@@ -52,7 +49,18 @@ public class KafkaEosConfig {
         return new KafkaTransactionManager<>(pf);
     }
 
-    // ===== EOS Listener Container Factory =====
+    // ===== B Listener Factory (non-tx) =====
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactoryB(
+            ConsumerFactory<String, Object> consumerFactory
+    ) {
+        var factory = new ConcurrentKafkaListenerContainerFactory<String, Object>();
+        factory.setConsumerFactory(consumerFactory);
+        // намеренно без transactionManager и без errorHandler - B только читает
+        return factory;
+    }
+
+    // ===== EOS Listener Container Factory (A -> B) =====
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, InputMessageDto> kafkaListenerContainerFactory(
             ConsumerFactory<String, InputMessageDto> consumerFactory,
@@ -91,13 +99,11 @@ public class KafkaEosConfig {
         backOff.setMultiplier(2.0);
         backOff.setMaxInterval(5_000L);
 
+        // ✅ ВАЖНО: конструктор с kafkaTemplate и commitRecovered=true
         DefaultAfterRollbackProcessor<String, InputMessageDto> processor =
-                new DefaultAfterRollbackProcessor<>(recoverer, backOff);
+                new DefaultAfterRollbackProcessor<>(recoverer, backOff, kafkaTemplate, true);
 
-        // ✅ КЛЮЧЕВО: после отправки в DLT — коммитим offset, чтобы не зациклиться
-        processor.setCommitRecovered(true);
-
-        // ✅ “не ретраим” для валидации (по желанию можно добавить ещё классы)
+        // ✅ “не ретраим” для валидации и десериализации (по желанию)
         processor.addNotRetryableExceptions(
                 IllegalArgumentException.class,
                 org.springframework.kafka.support.serializer.DeserializationException.class
