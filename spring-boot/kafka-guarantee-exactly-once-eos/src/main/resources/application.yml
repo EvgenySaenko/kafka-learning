@@ -1,0 +1,41 @@
+server:
+  port: 8085                              # порт приложения (чтобы не пересекаться с другими модулями)
+
+app:
+  kafka:
+    bootstrap-servers: localhost:9092      # адрес брокера Kafka
+    topic-a: guarantee-eos-topic-a         # входной топик A (откуда читаем)
+    topic-b: guarantee-eos-topic-b         # выходной топик B (куда пишем)
+    group-id: guarantee-eos-group          # consumer group для чтения A
+
+spring:
+  kafka:
+    bootstrap-servers: ${app.kafka.bootstrap-servers} # пробрасываем адрес брокера в spring kafka
+
+    consumer:
+      group-id: ${app.kafka.group-id}      # группа (offsets будут храниться для неё)
+      enable-auto-commit: false            # авто-коммит offsets выключен (offsets коммитим "правильно" через EOS)
+      auto-offset-reset: earliest          # если offsets нет — читать с начала
+
+      # ✅ ВАЖНО: чтобы не падать на poll() при ошибке десериализации
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+
+      properties:
+        # делегаты - "настоящие" десериализаторы
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "*"  # разрешаем десериализацию DTO (для демо)
+        isolation.level: read_committed    # ✅ читать ТОЛЬКО committed записи (не видеть незакоммиченные транзакции)
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer             # key = String
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer     # value = DTO -> JSON
+      properties:
+        acks: all                          # лидер + все ISR должны подтвердить запись (надёжнее)
+        enable.idempotence: true           # ✅ идемпотентный продьюсер: защита от дублей при ретраях отправки
+      transaction-id-prefix: eos-demo-     # ✅ ВКЛЮЧАЕТ транзакционного producer'а в Spring Kafka (важно для EOS)
+
+    listener:
+      ack-mode: record                     # подтверждение на уровне record (в EOS offsets уйдут в транзакцию)
+      concurrency: 1                       # 1 поток (для простоты демо; потом можно увеличить)

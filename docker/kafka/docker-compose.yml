@@ -29,6 +29,10 @@ services:
 
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
+      # ===== EOS (Exactly-Once Semantics) settings for SINGLE broker =====
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1   # EOS: internal tx topic RF=1 (у нас 1 брокер)
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1              # EOS: min ISR=1 (иначе транзакции не стартуют)
+
   kafdrop:
     image: obsidiandynamics/kafdrop:latest
     container_name: kafdrop
