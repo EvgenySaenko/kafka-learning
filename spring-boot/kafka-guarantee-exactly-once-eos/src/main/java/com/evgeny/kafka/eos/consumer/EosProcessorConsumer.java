@@ -63,6 +63,7 @@ public class EosProcessorConsumer {
         // 4) SLOW_AFTER_SEND: удобно руками успеть "убить" приложение во время транзакции
         if ("SLOW_AFTER_SEND".equalsIgnoreCase(dto.getValue())) {
             try {
+                log.info("SLOW_AFTER_SEND - sleep");
                 Thread.sleep(15_000L);
             } catch (InterruptedException ignored) {}
         }
