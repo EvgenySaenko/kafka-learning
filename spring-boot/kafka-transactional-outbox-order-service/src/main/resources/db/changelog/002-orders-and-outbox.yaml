@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-orders-and-outbox-event
+      author: evgeny
+      changes:
+        - sql:
+            sql: |
+              -- ===== ORDERS =====
+              CREATE TABLE IF NOT EXISTS outbox_order.orders (
+                id         UUID PRIMARY KEY,
+                amount     NUMERIC(19,2) NOT NULL,
+                status     VARCHAR(32) NOT NULL,
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+              );
+
+              CREATE INDEX IF NOT EXISTS ix_orders_created_at
+                ON outbox_order.orders (created_at);
+
+              -- ===== OUTBOX_EVENT =====
+              CREATE TABLE IF NOT EXISTS outbox_order.outbox_event (
+                id             UUID PRIMARY KEY,
+                aggregate_type  VARCHAR(64) NOT NULL,
+                aggregate_id    UUID NOT NULL,
+                event_type      VARCHAR(128) NOT NULL,
+                payload         JSONB NOT NULL,
+                status          VARCHAR(16) NOT NULL DEFAULT 'NEW', -- NEW/SENT/ERROR
+                created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+                sent_at         TIMESTAMPTZ NULL,
+                retry_count     INT NOT NULL DEFAULT 0,
+                last_error      TEXT NULL,
+                partition_key   VARCHAR(128) NULL
+              );
+
+              CREATE INDEX IF NOT EXISTS ix_outbox_event_status_created_at
+                ON outbox_order.outbox_event (status, created_at);
+
+              CREATE INDEX IF NOT EXISTS ix_outbox_event_aggregate_id
+                ON outbox_order.outbox_event (aggregate_id);

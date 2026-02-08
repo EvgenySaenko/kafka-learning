@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-order-dummy
+      author: evgeny
+      changes:
+        - sql:
+            sql: |
+              CREATE TABLE IF NOT EXISTS outbox_order.order_dummy (
+                id BIGSERIAL PRIMARY KEY,
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+              );

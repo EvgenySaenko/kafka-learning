@@ -4,6 +4,7 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="delegatedBuild" value="false" />
         <option name="testRunner" value="PLATFORM" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
@@ -23,6 +24,8 @@
             <option value="$PROJECT_DIR$/spring-boot/kafka-guarantee-exactly-once-eos" />
             <option value="$PROJECT_DIR$/spring-boot/kafka-json-demo" />
             <option value="$PROJECT_DIR$/spring-boot/kafka-producer" />
+            <option value="$PROJECT_DIR$/spring-boot/kafka-transactional-outbox-billing-service" />
+            <option value="$PROJECT_DIR$/spring-boot/kafka-transactional-outbox-order-service" />
           </set>
         </option>
       </GradleProjectSettings>

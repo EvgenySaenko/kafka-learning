@@ -1,0 +1,43 @@
+server:
+  port: 8086
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kafka_outbox
+    username: outbox
+    password: outbox
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none                # Hibernate не создаёт схему — это делает Liquibase
+    properties:
+      hibernate:
+        default_schema: outbox_order # JPA по умолчанию работает в этой схеме
+        format_sql: true
+    open-in-view: false
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/master.yaml
+    default-schema: outbox_order     # Liquibase свои служебные таблицы тоже кладёт в outbox_order
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+app:
+  publisher:
+    enabled: true
+    fixed-delay-ms: 1000
+    batch-size: 50
+    topic: orders.events
+
+
+logging:
+  level:
+    org.hibernate.SQL: INFO
+    com.evgeny.kafka.outbox.outbox: INFO
+
